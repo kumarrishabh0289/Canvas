@@ -51,6 +51,7 @@ class Courses extends Component {
         const data = {
             course_id: course.course_id,
             permission: this.state.permission,
+            student: localStorage.user,
 
         }
         //set the with credentials to true
@@ -59,10 +60,10 @@ class Courses extends Component {
         axios.post('http://localhost:3001/enroll', data)
             .then(response => {
                 console.log("Status Code : ", response.status);
-                if (response.status === 200) {
+                if (response.status === 201) {
                     this.setState({
                         authFlag: true,
-                        status: response.data,
+                        status: response.data.message,
                     })
                 }
                 else {
