@@ -42,6 +42,8 @@ var passport = require("passport");
 
 
 app.post("/secret", passport.authenticate('jwt', { session : false }), function(req, res){
+
+    console.log("success",req.body.data);
     
     res.json({'message': "Success"});
   });

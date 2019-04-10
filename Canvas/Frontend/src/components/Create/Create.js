@@ -117,7 +117,7 @@ class Create extends Component {
                     <div class="body-div">
                         <div>
                             <div>
-                                <br/>
+                                <br />
                                 <h2>User SignUp</h2>
                                 <p>Please Enter Your Detail</p>
                             </div>

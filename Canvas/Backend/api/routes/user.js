@@ -121,7 +121,7 @@ router.post('/login', (req, res, next) => {
                     email: doc.email,
                     name: doc.name,
                     role: doc.role,
-                    jwt: token,
+                    jwt: 'Bearer '+token,
                 });
             }
             else {

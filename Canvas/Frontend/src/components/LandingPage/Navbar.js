@@ -20,18 +20,7 @@ class Navbar extends Component {
     }
 
     componentWillMount(){
-        axios.get('http://localhost:3001/session')
-                .then((response) => {
-                //update the state with the response data
-                this.setState({
-                    user : response.data.user,
-                    email: response.data.email,
-                    role: response.data.role
-                });
-                console.log(this.state.user)
-                console.log(this.state.email)
-                console.log(this.state.role)
-            });
+  
     }
     //handle logout to destroy the cookie
     handleLogout = () => {
@@ -45,7 +34,7 @@ class Navbar extends Component {
             console.log("Able to read cookie");
             navLogin = (
                 <ul class="nav navbar-nav navbar-right">
-                        <li><Link to="/" onClick = {this.handleLogout} class="nav-link"><span class="glyphicon glyphicon-user" ></span>Logout</Link></li>
+                        <li><Link to="/" onClick = {this.handleLogout} class="nav-link"><span class="glyphicon glyphicon-user" ></span><i class='fas fa-power-off'></i> Logout</Link></li>
                 </ul>
             );
         }else{
@@ -53,7 +42,7 @@ class Navbar extends Component {
             console.log("Not Able to read cookie");
             navLogin = (
                 <ul class="nav navbar-nav navbar-right">
-                        <li><Link to="/login" class="nav-link"><span class="glyphicon glyphicon-log-in"></span> Login</Link></li>
+                        <li><Link to="/login" class="nav-link"><i class='fas fa-user'></i>  Login</Link></li>
                 </ul>
             )
         }
@@ -88,15 +77,13 @@ class Navbar extends Component {
                 <div class="sidebar">
 
                     <div class="s-layout__sidebar">
-                        <a class="s-sidebar__trigger" href="#0">
-                            <i class="fa fa-bars"></i>
-                        </a>
+                        
 
                         <nav class="s-sidebar__nav">
                             
-                            <Link to="/home" class="nav-link">Home</Link>
-                           <Link to="/create" class="nav-link">Sign Up</Link>
-                          <Link to="/profile" class="nav-link">Profile</Link>
+                            <Link to="/home" class="nav-link" ><i class='fas fa-home'></i> Home</Link><br/>
+                           <Link to="/create" class="nav-link"><i class='far fa-edit'></i> Sign Up </Link><br/>
+                          <Link to="/profile" class="nav-link"><i class='fas fa-user'></i> Profile</Link>
                                
                            
                         </nav>

@@ -51,17 +51,17 @@ class Profile extends Component {
     componentDidMount() {
         var headers = new Headers();
         const params = {
-            secret_token : localStorage.jwt,
+            
             email: localStorage.email,
           };
         const options = {
             params,
             headers: {
-              
+              'Authorization':localStorage.jwt,
               
             },
            };
-        axios.get('http://localhost:3001/secretprofile',options)
+        axios.get('http://localhost:3001/secretprofile/email',options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({

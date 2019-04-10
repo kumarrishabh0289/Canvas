@@ -20,6 +20,27 @@ router.get('/', (req, res, next) => {
    
 });
 
+router.get('/email', (req, res, next)=>{
+    const email = req.query.email;
+    Course.find({ faculty_email: email })
+        .exec()
+        .then(doc => {
+        console.log("From database",doc);
+        if (doc){
+            res.status(200).json(doc);
+        }
+        else {
+            res.status(404).json({message:"not a valid Email ID"});
+        }
+        
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error:err});
+    })
+        
+});
+
 
 router.post('/', (req, res, next) => {
     const course = new Course({

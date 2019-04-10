@@ -28,21 +28,21 @@ router.get('/profile', (req, res, next) => {
     })
   });
 
-router.get('/', (req, res, next) => {
-    Product.find()
-        .exec()
-        .then(docs => {
-            console.log(docs);
-            res.status(200).json(docs);
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error:err
-            })
-        })
+// router.get('/', (req, res, next) => {
+//     Product.find()
+//         .exec()
+//         .then(docs => {
+//             console.log(docs);
+//             res.status(200).json(docs);
+//         })
+//         .catch(err =>{
+//             console.log(err);
+//             res.status(500).json({
+//                 error:err
+//             })
+//         })
    
-});
+// });
 
 router.post('/', (req, res, next) => {
     const product = new Product({
@@ -62,8 +62,8 @@ router.post('/', (req, res, next) => {
     });
 });
 
-router.get('/:productId', (req, res, next)=>{
-    const id = req.params.productId;
+router.get('/', (req, res, next)=>{
+    const id = req.query.productId;
     Product.findById(id)
         .exec()
         .then(doc => {

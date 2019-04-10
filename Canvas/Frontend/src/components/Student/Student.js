@@ -20,25 +20,20 @@ class Student extends Component {
 
         }
     }
-    //get the books data from backend  
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         var headers = new Headers();
         const params = {
-            secret_token: localStorage.jwt,
-            email: localStorage.email,
+
+            email: localStorage.email
         };
         const options = {
             params,
             headers: {
-
+                'Authorization': localStorage.jwt,
 
             },
         };
-        axios.get('http://localhost:3001/enroll', options)
+        axios.get('http://localhost:3001/enroll/email', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -50,8 +45,19 @@ class Student extends Component {
     submitButton = (course) => {
         var headers = new Headers();
         //prevent page from refresh
+        const params = {
 
+
+        };
+        const options = {
+            params,
+            headers: {
+                'Authorization': localStorage.jwt,
+
+            },
+        };
         const data = {
+            email: localStorage.email,
             course_id: course.course_id,
 
 
@@ -59,21 +65,19 @@ class Student extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/dropcourse', data)
+        axios.put('http://localhost:3001/enroll', data)
             .then(response => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 200) {
                     this.setState({
                         authFlag: true,
-                        status: response.data,
+                        status: response.data.message,
                     })
                 }
                 else {
                     console.log("Status Code : ", response.status);
 
                 }
-
-
 
             });
     }
@@ -86,45 +90,18 @@ class Student extends Component {
             course_id: course.course_id,
         }
         //set the with credentials to true
-        axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.post('http://localhost:3001/setcourse', data)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                if (response.status === 200) {
-                    this.setState({
-                        authFlag: true,
-                        status: response.data,
-                        url: 1,
-                    })
-                }
-                else {
-                    console.log("Status Code : ", response.status);
 
-                }
-
-
-
-            });
     }
 
     render() {
 
-        //iterate over student_course to create a table row
-
-        //if not logged in go to login page
         let redirectVar = null;
         if (!cookie.load('cookie')) {
             redirectVar = <Redirect to="/login" />
         }
-
         if (this.state.url == 1) {
             redirectVar = <Redirect to="/studentdashboard" />
-
-
         }
-
-
 
         return (
             <div class="container">
@@ -135,15 +112,8 @@ class Student extends Component {
                 <div class="body-div">
                     <p>Welcome {localStorage.name}</p><br />
 
-
-
-
-
                     <h2>Course Cart</h2>
                     <div class="card-columns">
-
-
-
                         {
                             this.state.student_course.map(course => {
                                 var stat = "";
@@ -182,6 +152,8 @@ class Student extends Component {
                             })
                         }
                     </div>
+                    <p>{this.state.status}</p>
+                    <br />
                     <Link to="/enroll"><button class="btn btn-primary">+ Enroll For Course</button></Link>
 
                 </div>

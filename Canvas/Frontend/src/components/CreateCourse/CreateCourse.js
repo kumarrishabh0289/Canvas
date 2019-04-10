@@ -1,26 +1,27 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../../App.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
-import {Redirect} from 'react-router';
+import { Redirect } from 'react-router';
 
 //Define a Login Component
-class CreateCourse extends Component{
+class CreateCourse extends Component {
     //call the constructor method
-    constructor(props){
+    constructor(props) {
         //Call the constrictor of Super class i.e The Component
         super(props);
         //maintain the state required for this component
         this.state = {
-            id : "",
-            name : "",
-            department : "",
-            ta :"",
-            room :"",
-            capacity : "",
-            waiting : "",
-            term : "",
-            authFlag : false
+            id: "",
+            name: "",
+            department: "",
+            ta: "",
+            room: "",
+            capacity: "",
+            waiting: "",
+            term: "",
+            authFlag: false,
+            status: "",
         }
         //Bind the handlers to this class
         this.idChangeHandler = this.idChangeHandler.bind(this);
@@ -34,52 +35,52 @@ class CreateCourse extends Component{
         this.submitCreate = this.submitCreate.bind(this);
     }
     //Call the Will Mount to set the auth Flag to false
-    componentWillMount(){
+    componentWillMount() {
         this.setState({
-            authFlag : false
+            authFlag: false
         })
     }
     //username change handler to update state variable with the text entered by the user
     nameChangeHandler = (e) => {
         this.setState({
-            name : e.target.value
+            name: e.target.value
         })
     }
     //password change handler to update state variable with the text entered by the user
     idChangeHandler = (e) => {
         this.setState({
-            id : e.target.value
+            id: e.target.value
         })
     }
     //password change handler to update state variable with the text entered by the user
     departmentChangeHandler = (e) => {
         this.setState({
-            department : e.target.value
+            department: e.target.value
         })
     }
     taChangeHandler = (e) => {
         this.setState({
-            ta : e.target.value
+            ta: e.target.value
         })
     }
     roomChangeHandler = (e) => {
         this.setState({
-            room : e.target.value
+            room: e.target.value
         })
     }
     capacityChangeHandler = (e) => {
         this.setState({
-            capacity : e.target.value
+            capacity: e.target.value
         })
     }
     waitingChangeHandler = (e) => {
         this.setState({
-            waiting : e.target.value
+            waiting: e.target.value
         })
     }
     termChangeHandler = (e) => {
         this.setState({
-            term : e.target.value
+            term: e.target.value
         })
     }
     //submit Login handler to send a request to the node backend
@@ -88,76 +89,78 @@ class CreateCourse extends Component{
         //prevent page from refresh
         e.preventDefault();
         const data = {
-            name : this.state.name,
-            id : this.state.id,
-            department : this.state.department,
-            ta : this.state.ta,
-            room : this.state.room,
-            capacity : this.state.capacity,
-            waiting : this.state.waiting,
-            term : this.state.term
+            faculty: localStorage.email,
+            name: this.state.name,
+            id: this.state.id,
+            department: this.state.department,
+            ta: this.state.ta,
+            room: this.state.room,
+            capacity: this.state.capacity,
+            waiting: this.state.waiting,
+            term: this.state.term
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.put('http://localhost:3001/createcourse',data)
+        axios.post('http://localhost:3001/course', data)
             .then(response => {
-                console.log("Status Code : ",response.status); 
-                if(response.status === 200){
+                console.log("Status Code : ", response.status);
+                if (response.status === 201) {
                     this.setState({
-                        authFlag : true
+                        authFlag: true,
+                        status: response.data.message,
                     })
-                }else{
+                } else {
                     this.setState({
-                        authFlag : false
+                        authFlag: false
                     })
                 }
-            });        
+            });
     }
-    render()
-    {
+    render() {
         //redirect based on successful login
         let redirectVar = null;
-        if (this.state.authFlag){
-            redirectVar = <Redirect to= "/course"/>
+        if (this.state.authFlag) {
+            redirectVar = <Redirect to="/course" />
         }
-        return(
+        return (
             <div>
                 {redirectVar}
-                <br/>
+                <br />
                 <div class="container">
-                        <div style={{width: '30%'}} class="form-group">
-                            <input onChange = {this.nameChangeHandler} type="text" class="form-control" name="name" placeholder="Course Name"/>
-                        </div>
-                        <br/>
-                        <div style={{width: '30%'}} class="form-group">
-                            <input  onChange = {this.idChangeHandler} type="text" class="form-control" name="id" placeholder="Course ID"/>
-                        </div>
-                        <br/>
-                        <div style={{width: '30%'}} class="form-group">
-                            <input  onChange = {this.departmentChangeHandler} type="text" class="form-control" name="dept" placeholder="Department"/>
-                        </div>
-                        <div style={{width: '30%'}} class="form-group">
-                            <input  onChange = {this.taChangeHandler} type="text" class="form-control" name="dest" placeholder="TA Email ID"/>
-                        </div>
-                        <div style={{width: '30%'}} class="form-group">
-                            <input  onChange = {this.roomChangeHandler} type="text" class="form-control" name="room" placeholder="Room"/>
-                        </div>
-                        <div style={{width: '30%'}} class="form-group">
-                            <input  onChange = {this.capacityChangeHandler} type="number" class="form-control" name="capacity" placeholder="Total Capacity"/>
-                        </div>
-                        <div style={{width: '30%'}} class="form-group">
-                            <input  onChange = {this.waitingChangeHandler} type="number" class="form-control" name="waiting" placeholder="Total Waiting"/>
-                        </div>
-                        <div style={{width: '30%'}} class="form-group">
-                            <input  onChange = {this.termChangeHandler} type="text" class="form-control" name="term" placeholder="Term"/>
-                        </div>
-                        <br/>
-                        <br/>
-                        <div style={{width: '30%'}}>
-                            <button onClick = {this.submitCreate} class="btn btn-success">Create new Course</button>
-                        </div> 
-                </div> 
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.nameChangeHandler} type="text" class="form-control" name="name" placeholder="Course Name" />
+                    </div>
+                    <br />
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.idChangeHandler} type="text" class="form-control" name="id" placeholder="Course ID" />
+                    </div>
+                    <br />
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.departmentChangeHandler} type="text" class="form-control" name="dept" placeholder="Department" />
+                    </div>
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.taChangeHandler} type="text" class="form-control" name="dest" placeholder="TA Email ID" />
+                    </div>
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.roomChangeHandler} type="text" class="form-control" name="room" placeholder="Room" />
+                    </div>
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.capacityChangeHandler} type="number" class="form-control" name="capacity" placeholder="Total Capacity" />
+                    </div>
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.waitingChangeHandler} type="number" class="form-control" name="waiting" placeholder="Total Waiting" />
+                    </div>
+                    <div style={{ width: '30%' }} class="form-group">
+                        <input onChange={this.termChangeHandler} type="text" class="form-control" name="term" placeholder="Term" />
+                    </div>
+                    <br />
+                    <br />
+                    <div style={{ width: '30%' }}>
+                        <button onClick={this.submitCreate} class="btn btn-success">Create new Course</button>
+                    </div>
+                    <p>{this.state.status}</p>
+                </div>
             </div>
         )
     }

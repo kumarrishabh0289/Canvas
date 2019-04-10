@@ -21,8 +21,8 @@ router.get('/', (req, res, next) => {
 
 });
 
-router.get('/:profileId', (req, res, next)=>{
-    const email = req.params.profileId;
+router.get('/email', (req, res, next)=>{
+    const email = req.query.email;
     Profile.findOne({ email: email })
         .exec()
         .then(doc => {

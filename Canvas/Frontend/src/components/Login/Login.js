@@ -28,23 +28,7 @@ class Login extends Component {
         this.submitLogin = this.submitLogin.bind(this);
     }
     //Call the Will Mount to set the auth Flag to false
-    componentWillMount() {
-        axios.get('http://localhost:3001/session')
-            .then((response) => {
-                //update the state with the response data
-                this.setState({
-                    
-                    user: response.data.user,
-
-                });
-                console.log("in component will mount");
-                console.log(this.state.user)
-
-            });
-        this.setState({
-            authFlag: false
-        });
-    }
+   
     //username change handler to update state variable with the text entered by the user
     usernameChangeHandler = (e) => {
         this.setState({
@@ -103,18 +87,19 @@ class Login extends Component {
 checkLogin = (e) => {
     var headers = new Headers();
     const params = {
-        secret_token : localStorage.jwt,
+        
       };
     const options = {
         params,
         headers: {
           
-          
+            'Authorization':localStorage.jwt
         },
        };
+      var data={data:"this is data"};
     //prevent page from refresh
     e.preventDefault();
-    axios.get('http://localhost:3001/secret',options).then((response) => {
+    axios.post('http://localhost:3001/secret',data,options).then((response) => {
         console.log(response.data)
       }).catch((error) => {
         console.log(error)
@@ -134,13 +119,14 @@ checkLogin = (e) => {
        
         return (
             <div>
-
                 {redirectVar}
+                
 
                 <div class="container">
 
 
                     <div class="main-div">
+                   
                         <div class="panel">
                             <h2>Login To System</h2>
                             <br />
@@ -162,9 +148,10 @@ checkLogin = (e) => {
                         <button onClick={this.submitLogin} class="btn btn-primary">Login</button> <t/>
                         <button onClick={this.checkLogin} class="btn btn-primary">Test </button>
                     </div>
+                   </div>
                 </div>
 
-            </div>
+            
         )
     }
 }

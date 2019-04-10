@@ -194,3 +194,14 @@ p.ridge {border-style: inset; border-color: green;}
   height:auto;
   display:inline-block;
 }
+
+#backgroundImage {
+  background-image: url('background.png');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  opacity: 0.2;
+  filter:alpha(opacity=20);
+  height:100%;
+  width:100%;
+  z-index:4;
+}
