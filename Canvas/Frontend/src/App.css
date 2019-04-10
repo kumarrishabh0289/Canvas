@@ -188,3 +188,9 @@ p.ridge {border-style: inset; border-color: green;}
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
 }
+
+.divider{
+  width:5px;
+  height:auto;
+  display:inline-block;
+}

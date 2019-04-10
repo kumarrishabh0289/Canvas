@@ -6,6 +6,7 @@ const enrollSchema = mongoose.Schema({
     student: String,
     enroll_id: String,
     status: String,
+    number:String,
       
    });
 

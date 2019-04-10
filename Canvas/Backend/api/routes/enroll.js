@@ -21,6 +21,27 @@ router.get('/', (req, res, next) => {
 
 });
 
+router.get('/:profileId', (req, res, next)=>{
+    const student = req.params.profileId;
+    Enroll.findOne({ student: student })
+        .exec()
+        .then(doc => {
+        console.log("From database",doc);
+        if (doc){
+            res.status(200).json(doc);
+        }
+        else {
+            res.status(404).json({message:"not a valid Email ID"});
+        }
+        
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error:err});
+    })
+        
+});
+
 router.get('/one', (req, res, next) => {
     Enroll.findOne().sort({ enroll_id: 'desc', _id: -1 }).limit(1)
         .exec()
@@ -37,6 +58,47 @@ router.get('/one', (req, res, next) => {
 
 });
 
+//Drop A Courese From Student Dashboard
+router.delete("/:productId", (req, res, next) => {
+    const id = req.params.productId;
+    Product.remove({ _id: id })
+        .exec()
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                Error:err
+            });
+        });
+});
+
+
+router.patch("/", (req, res, next) => {
+   
+
+    const email = updateOps.email;
+    console.log("updateOps",updateOps);
+    console.log("email",email);
+    Profile.update({email : email}, { $set: updateOps})
+        .exec()
+        .then(result => {
+            console.log(result);
+            res.status(200).json({
+                message:"Update Was Successfull"
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error:err
+            });
+        });
+});
+
+
+//Student Enroll for a Course 
 router.post('/', (req, res, next) => {
 
     Course.findOne({ course_id: req.body.course_id })
@@ -76,6 +138,7 @@ router.post('/', (req, res, next) => {
                                 student: req.body.student,
                                 status: "waitlist",
                                 enroll_id: enroll_id,
+                                number: current_wait,
                             });
                             enroll
                                 .save()
@@ -125,6 +188,7 @@ router.post('/', (req, res, next) => {
                                 student: req.body.student,
                                 status: "enrolled",
                                 enroll_id: enroll_id,
+                                number:total_enroll,
                             });
                             enroll
                                 .save()

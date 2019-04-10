@@ -1,9 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-
+var kafka = require('../kafka/client');
 const Product = require('../models/product');
 
+
+router.get('/kafka', (req, res, next) => {
+
+    kafka.make_request("product", req, function(err, result){
+        if(err){
+            console.log("Error in adding question.", err);
+        }
+        else{                
+            console.log("Property details saved successfully.", result);
+            res.status(200).json(result);
+        }
+    });
+    
+});
 
 router.get('/profile', (req, res, next) => {
     //We'll just send back the user details and the token

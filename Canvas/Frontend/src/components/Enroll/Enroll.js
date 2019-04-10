@@ -51,7 +51,7 @@ class Courses extends Component {
         const data = {
             course_id: course.course_id,
             permission: this.state.permission,
-            student: localStorage.user,
+            student: localStorage.email,
 
         }
         //set the with credentials to true

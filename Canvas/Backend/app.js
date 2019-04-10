@@ -41,11 +41,12 @@ var passport = require("passport");
 
 
 
-app.get("/secret", passport.authenticate('jwt', { session : false }), function(req, res){
+app.post("/secret", passport.authenticate('jwt', { session : false }), function(req, res){
     
     res.json({'message': "Success"});
   });
 
+app.use('/product', productRoutes);
 app.use('/user', userRoutes);
 app.use('/secretprofile', passport.authenticate('jwt', { session : false }),  SecretprofileRoutes);
 app.use('/profile',  profileRoutes);

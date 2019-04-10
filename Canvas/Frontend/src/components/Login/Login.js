@@ -84,7 +84,7 @@ class Login extends Component {
                     localStorage.setItem('role', response.data.role);
                     localStorage.setItem('jwt', response.data.jwt);
                     localStorage.setItem('name', response.data.name);
-                    console.log((localStorage.user))
+                    console.log((localStorage.email))
                     this.props.onLogin(data);
                     console.log(response.data);
                     this.setState({
