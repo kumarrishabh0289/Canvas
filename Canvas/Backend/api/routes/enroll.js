@@ -21,8 +21,28 @@ router.get('/', (req, res, next) => {
 
 });
 
+router.get('/status', (req, res, next) => {
+    const status = req.query.status;
+    const course = req.query.course;
+    Enroll.find({ status: status, course_id:course })
+        .exec()
+        .then(docs => {
+            console.log(docs);
+            res.status(200).json(docs);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            })
+        })
+
+});
+
 router.get('/email', (req, res, next) => {
+    console.log("reached here");
     const student = req.query.email;
+    console.log("student", student);
     Enroll.find({ student: student })
         .exec()
         .then(doc => {
@@ -84,7 +104,7 @@ router.put("/", (req, res, next) => {
                         .exec()
                         .then(result => {
                             console.log(result);
-                            res.status(200).json({ message: "Course Dropped Successfully" });
+                            res.status(200).json({ message: "Dropped Successfully" });
 
                         })
                         .catch(err => {

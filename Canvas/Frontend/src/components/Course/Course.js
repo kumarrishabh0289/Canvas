@@ -6,7 +6,7 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import Draggable from 'react-draggable';
 
-var role;
+
 class Courses extends Component {
     constructor() {
         super();
@@ -22,38 +22,16 @@ class Courses extends Component {
     }
 
     ProgressButton = (course) => {
-        var headers = new Headers();
-        //prevent page from refresh
-
-        const data = {
-            course_id: course.course_id,
-        }
-
-        axios.defaults.withCredentials = true;
-
-        axios.post('http://localhost:3001/setcourse', data)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                if (response.status === 200) {
-                    this.setState({
-                        authFlag: true,
-                        status: response.data,
-                        url: 1,
-                    })
-                }
-                else {
-                    console.log("Status Code : ", response.status);
-
-                }
-
-
-
-            });
+        localStorage.setItem('course', course.course_id);
+        this.setState({
+            authFlag: true,
+            url: 1,
+        })
     }
 
 
     componentDidMount() {
-        var headers = new Headers();
+
         const params = {
 
             email: localStorage.email
@@ -80,23 +58,24 @@ class Courses extends Component {
 
         //if not logged in go to login page
         let redirectVar = null;
-        var cretebutton = <Redirect to="/create" />
+
         if (!cookie.load('cookie')) {
             redirectVar = <Redirect to="/login" />
         }
-        if (this.state.url == 1) {
+        if (this.state.url === 1) {
             redirectVar = <Redirect to="/teacherdashboard" />
 
 
         }
-        if (localStorage.role == 'teacher') {
+        if (localStorage.role === 'teacher') {
             return (
                 <div class="container">
                     {redirectVar}
 
                     <div class="body-div">
                         <br />
-                        <h2>List of All Courses</h2>
+                        <h2>Faculty Dashboard</h2><br />
+                        <p>Welcome, {localStorage.name}</p>
                         <div class="card-columns">
                             {
                                 this.state.courses.map(course => {
@@ -120,9 +99,7 @@ class Courses extends Component {
                                                                     <th>Department</th>
                                                                     <td>{course.department}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <th>Faculty Email</th><td>{course.faculty_email}</td>
-                                                                </tr>
+
 
                                                                 <tr>
                                                                     <th>Room No.</th><td>{course.room}</td>
@@ -137,7 +114,10 @@ class Courses extends Component {
                                                                     <th>Term</th><td>{course.term}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>TA's Email</th><td>{course.ta_email}</td>
+                                                                    <th>Total Enrolled</th><td>{course.total_enroll}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Waiting</th><td>{course.current_wait}</td>
                                                                 </tr>
 
                                                             </table>

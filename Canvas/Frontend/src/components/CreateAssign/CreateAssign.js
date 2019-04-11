@@ -43,20 +43,33 @@ class CreateAssign extends Component{
   
     //submit Login handler to send a request to the node backend
     submitCreate = (e) => {
-        var headers = new Headers();
+       
         //prevent page from refresh
         e.preventDefault();
+        const params = {
+
+        };
+        const options = {
+            params,
+            headers: {
+                'Authorization': localStorage.jwt,
+
+            },
+        };
+
         const data = {
+            course_id:localStorage.course,
             content:this.state.content,
-            date:this.state.date,
+            due:this.state.date,
+            url:"nodocs.png"
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.put('http://localhost:3001/createassign',data)
+        axios.post('http://localhost:3001/assignment',data, options)
             .then(response => {
                 console.log("Status Code : ",response.status); 
-                if(response.status === 200){
+                if(response.status === 201){
                     this.setState({
                         authFlag : true
                     })

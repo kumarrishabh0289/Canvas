@@ -9,6 +9,10 @@ const userRoutes = require('./api/routes/user');
 const profileRoutes = require('./api/routes/profile');
 const courseRoutes = require('./api/routes/course');
 const enrollRoutes = require('./api/routes/enroll');
+const assignmentRoutes = require('./api/routes/assignment');
+const quizRoutes = require('./api/routes/quiz');
+const announcementRoutes = require('./api/routes/announcement');
+const lectureRoutes = require('./api/routes/lecture');
 
 const SecretprofileRoutes = require('./api/routes/secretprofile');
 var passport = require("passport");
@@ -54,6 +58,11 @@ app.use('/secretprofile', passport.authenticate('jwt', { session : false }),  Se
 app.use('/profile',  profileRoutes);
 app.use('/course',  courseRoutes);
 app.use('/enroll',  enrollRoutes);
+app.use('/assignment',  assignmentRoutes);
+app.use('/quiz',  quizRoutes);
+app.use('/announcement',  announcementRoutes);
+app.use('/lecture',  lectureRoutes);
+
 
 app.use((req, res, next) => {
     const error = new Error('Api not found');

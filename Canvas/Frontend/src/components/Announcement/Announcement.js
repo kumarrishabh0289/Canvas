@@ -36,19 +36,30 @@ class Announcement extends Component{
   
     //submit Login handler to send a request to the node backend
     submitCreate = (e) => {
-        var headers = new Headers();
+        
+        const params = {
+
+        };
+        const options = {
+            params,
+            headers: {
+                'Authorization': localStorage.jwt,
+
+            },
+        };
         //prevent page from refresh
         e.preventDefault();
         const data = {
+            course_id:localStorage.course,
             content:this.state.content,
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.put('http://localhost:3001/announcement',data)
+        axios.post('http://localhost:3001/announcement',data, options)
             .then(response => {
                 console.log("Status Code : ",response.status); 
-                if(response.status === 200){
+                if(response.status === 201){
                     this.setState({
                         authFlag : true
                     })

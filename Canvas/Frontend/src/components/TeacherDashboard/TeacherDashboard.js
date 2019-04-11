@@ -31,24 +31,21 @@ class TeacherDashboard extends Component {
         this.onChange = this.onChange.bind(this);
         this.numberChangeHandler = this.numberChangeHandler.bind(this);
     }
-    componentWillMount() {
-        axios.get('http://localhost:3001/session')
-            .then((response) => {
-                //update the state with the response data
-                this.setState({
-                    user: response.data.user,
-                    email: response.data.email,
-                    role: response.data.role,
-                    course: response.data.course,
-                });
-                console.log(this.state.user)
-                console.log(this.state.email)
-                console.log(this.state.role)
-            });
-    }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/studentincourse')
+        const params = {
+
+            course: localStorage.course,
+            status: "enrolled"
+        };
+        const options = {
+            params,
+            headers: {
+                'Authorization': localStorage.jwt,
+
+            },
+        };
+        axios.get('http://localhost:3001/enroll/status', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -56,7 +53,7 @@ class TeacherDashboard extends Component {
                 });
 
             });
-        axios.get('http://localhost:3001/teacherassignmentview')
+        axios.get('http://localhost:3001/assignment/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -65,7 +62,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/announcementview')
+        axios.get('http://localhost:3001/announcement/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -74,7 +71,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/quizview')
+        axios.get('http://localhost:3001/quiz/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -83,7 +80,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/lectureview')
+        axios.get('http://localhost:3001/lecture/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -110,19 +107,21 @@ class TeacherDashboard extends Component {
 
         const data = {
             email: course.student,
+            course_id: course.course_id,
+
 
 
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/dropstudent', data)
+        axios.put('http://localhost:3001/enroll', data)
             .then(response => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 200) {
                     this.setState({
 
-                        status_drop: response.data,
+                        status_drop: response.data.message,
                     })
                 }
                 else {
@@ -229,20 +228,37 @@ class TeacherDashboard extends Component {
         e.preventDefault();
         const formData = new FormData();
         formData.append('myImage', this.state.file);
-        formData.append('id', assign.id);
+        formData.append('id', assign._id);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         };
-        axios.post("http://localhost:3001/pdfupload", formData, config)
+        axios.post("http://localhost:3001/assignment/upload", formData, config)
             .then((response) => {
                 alert("The file is successfully uploaded");
-                this.setState({ file_status: this.state.file_status.concat(response.data) });
+                this.setState({ file_status: response.data.message});
             }).catch((error) => {
             });
     }
 
+    onSubmitLecture(e, lecture) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('myImage', this.state.file);
+        formData.append('id', lecture._id);
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+        axios.post("http://localhost:3001/lecture/upload", formData, config)
+            .then((response) => {
+                alert("The file is successfully uploaded");
+                this.setState({ file_status: response.data.message});
+            }).catch((error) => {
+            });
+    }
 
     onChange(e) {
         this.setState({
@@ -275,17 +291,13 @@ class TeacherDashboard extends Component {
         }
 
         return (
-            <div>
+            <div class="container">
                 {redirectVar}
+                <br />
+                <h3>Dashboard for Course {localStorage.course}</h3>
+                <p>Welcome, {localStorage.name}</p>
 
-                <h2>{this.state.user}'s Dashboard for Course {this.state.course}</h2>
-
-
-
-
-
-
-                <div class="container">
+                <div class="body-div">
 
 
                     <ul class="nav nav-tabs">
@@ -304,38 +316,30 @@ class TeacherDashboard extends Component {
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
+                                        
+                                        <th>Content</th>
                                         <th>URL</th>
+                                        <th>Uploaded Docs</th>
 
 
 
                                     </tr>
                                 </thead>
                                 {
-                                    this.state.lecture.map(lect => {
+                                     this.state.lecture.map(lect => {
                                         var ref = "#";
-                                        ref = ref + lect.time;
+                                        ref = ref + lect._id;
                                         var path = "http://localhost:3000/uploads/";
-                                        if(lect.url){
-                                            path = path + lect.url;
 
-                                        }
-                                        else path = path + "nodocs.png";
-                                        
-
+                                        path = path + lect.url;
                                         return (
                                             <tbody>
                                                 <tr>
-
-
-
-
-
-
-
-                                                    <td> {lect.time}</td>
+                                                   
+                                                    
+                                                    <td>{lect.content}</td>
                                                     <td>
-                                                        <div id={lect.time} class="modalDialog">
+                                                        <div id={lect._id} class="modalDialog">
                                                             <div>
 
                                                                 <a href="#close" title="Close" class="close">X</a>
@@ -346,10 +350,17 @@ class TeacherDashboard extends Component {
                                                             </div>
                                                         </div>
                                                         <a href={ref}>Open Document</a>
-
                                                     </td>
+                                                    <td>
+                                                        <form onSubmit={(e) => this.onSubmitLecture(e, lect)}>
 
+                                                            <input type="file" name="myImage" onChange={this.onChange} />
 
+                                                            <button type="submit" class="btn btn-primary">Upload</button>
+
+                                                        </form>
+                                                        
+                                                    </td>
 
 
                                                 </tr>
@@ -370,8 +381,6 @@ class TeacherDashboard extends Component {
                                         <th>Announcement Id</th>
                                         <th>Content</th>
 
-
-
                                     </tr>
                                 </thead>
                                 {
@@ -381,7 +390,7 @@ class TeacherDashboard extends Component {
                                         return (
                                             <tbody>
                                                 <tr>
-                                                    <td>{announce.id}</td>
+                                                    <td>{announce._id}</td>
                                                     <td>{announce.content}</td>
 
 
@@ -395,7 +404,8 @@ class TeacherDashboard extends Component {
                             </table>
                         </div>
                         <div id="menu2" class="tab-pane fade">
-                            <h3>Assignment List</h3>
+                            <br />
+                            <h4>Assignment List</h4>
                             <h2><Link to="/createassign"><button class="btn btn-primary">+ Create Assignments</button></Link></h2>
                             <table class="table">
                                 <thead>
@@ -410,24 +420,22 @@ class TeacherDashboard extends Component {
                                     </tr>
                                 </thead>
                                 {
+
+
                                     this.state.assign.map(assig => {
                                         var ref = "#";
-                                        ref = ref + assig.id;
+                                        ref = ref + assig._id;
                                         var path = "http://localhost:3000/uploads/";
-                                        if(assig.url){
-                                            path = path + assig.url;
 
-                                        }
-                                        else path = path + "nodocs.png";
-                                        
+                                        path = path + assig.url;
                                         return (
                                             <tbody>
                                                 <tr>
-                                                    <td>{assig.id}</td>
+                                                    <td>{assig._id}</td>
                                                     <td>{assig.due}</td>
                                                     <td>{assig.content}</td>
                                                     <td>
-                                                    <div id={assig.id} class="modalDialog">
+                                                        <div id={assig._id} class="modalDialog">
                                                             <div>
 
                                                                 <a href="#close" title="Close" class="close">X</a>
@@ -460,7 +468,8 @@ class TeacherDashboard extends Component {
                             </table>
                         </div>
                         <div id="menu3" class="tab-pane fade">
-                            <h3>Quiz List</h3>
+                        <br/>
+                            <h4>Quiz List</h4>
                             <h2><Link to="/quiz"><button class="btn btn-primary">+ Create Quiz</button></Link></h2>
                             <table class="table">
                                 <thead>
@@ -480,7 +489,7 @@ class TeacherDashboard extends Component {
                                         return (
                                             <tbody>
                                                 <tr>
-                                                    <td>{qui.id}</td>
+                                                    <td>{qui._id}</td>
                                                     <td>{qui.due}</td>
                                                     <td>{qui.content}</td>
 
@@ -495,7 +504,8 @@ class TeacherDashboard extends Component {
                             </table>
                         </div>
                         <div id="menu4" class="tab-pane fade">
-                            <h3>Enrolled Students</h3>
+                            <br />
+                            <h4>Enrolled Students</h4>
                             <table class="table">
                                 <thead>
                                     <tr>
