@@ -85,10 +85,11 @@ class Student extends Component {
     ProgressButton = (course) => {
         var headers = new Headers();
         //prevent page from refresh
-
-        const data = {
-            course_id: course.course_id,
-        }
+        localStorage.setItem('course', course.course_id);
+        this.setState({
+           url:1
+        })
+        
         //set the with credentials to true
 
     }

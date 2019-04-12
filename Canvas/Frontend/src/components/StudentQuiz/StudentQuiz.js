@@ -25,23 +25,23 @@ class StudentQuiz extends Component {
     }  
     //get the books data from backend  
     componentWillMount(){
-        axios.get('http://localhost:3001/session')
-                .then((response) => {
-                //update the state with the response data
-                this.setState({
-                    user : response.data.user,
-                    email: response.data.email,
-                    role: response.data.role,
-                    course: response.data.course,
-                });
-                console.log(this.state.user)
-                console.log(this.state.email)
-                console.log(this.state.role)
-            });
+    
     }
 
     componentDidMount(){
-        axios.get('http://localhost:3001/quizview')
+        const params = {
+
+            course: localStorage.course,
+           
+        };
+        const options = {
+            params,
+            headers: {
+                'Authorization': localStorage.jwt,
+
+            },
+        };
+        axios.get('http://localhost:3001/quiz/course', options)
         .then((response) => {
         //update the state with the response data
         this.setState({
@@ -78,20 +78,23 @@ class StudentQuiz extends Component {
         
 
       ProgressButton = (quiz) => {
-        var headers = new Headers();
+        
         //prevent page from refresh
         
         const data = {
-           id : quiz.id,
+           quiz_id : quiz._id,
            answer: this.state.answer,
+           course_id:localStorage.course,
+           student:localStorage.email,
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/submitquiz',data)
+        axios.post('http://localhost:3001/submission',data)
             .then(response => {
                 console.log("Status Code : ",response.status);
-                if(response.status === 200){
+                if(response.status === 201){
+                    alert("Submission Sucessfull");
                     this.setState({
                         authFlag : true,
                         status:response.data,
@@ -116,16 +119,16 @@ class StudentQuiz extends Component {
    
 
         return(
-            <div>
-               
-                <h3>{this.state.course}: List of all Quizes of {this.state.user}</h3>
+            <div class="container">
+               <br/>
+                <h4>{localStorage.course}: List of all Quizes of {localStorage.name}</h4>
                 <h2><Link to="/studentdashboard"><button class="btn btn-primary"> Dashboard </button></Link></h2>
             
                 <div class="tab">
                     {
                         this.state.quiz.map(qui => {
                             return(
-                            <button class="tablinks"   onClick={(event)=>this.openAssignment(event,qui.id)} >Quiz ID#{qui.id}</button>
+                            <button class="tablinks"   onClick={(event)=>this.openAssignment(event,qui._id)} >{qui.due}</button>
   
                             )
                         })
@@ -138,9 +141,9 @@ class StudentQuiz extends Component {
                        this.state.quiz.map(qui => {
                             
                             return(
-                            <div id={qui.id} class="tabcontent">
-                            <h3>Due date: {qui.due}</h3>
-                            <h3>{qui.course_id}Quiz Id:{qui.id}</h3>
+                            <div id={qui._id} class="tabcontent">
+                            <p>Due date: {qui.due}</p>
+                            <p>refn id:{qui._id}</p>
                          
                             
                             <p>{qui.content}</p>

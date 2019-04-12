@@ -22,23 +22,23 @@ class SubmissionView extends Component {
     }  
     //get the books data from backend  
     componentWillMount(){
-        axios.get('http://localhost:3001/session')
-                .then((response) => {
-                //update the state with the response data
-                this.setState({
-                    user : response.data.user,
-                    email: response.data.email,
-                    role: response.data.role,
-                    course: response.data.course,
-                });
-                console.log(this.state.user)
-                console.log(this.state.email)
-                console.log(this.state.role)
-            });
+
     }
 
     componentDidMount(){
-        axios.get('http://localhost:3001/studentquizview')
+        const params = {
+
+            student: localStorage.email,
+      
+          };
+          const options = {
+            params,
+            headers: {
+              'Authorization': localStorage.jwt,
+      
+            },
+          };
+        axios.get('http://localhost:3001/submission/quiz', options)
                 .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -79,9 +79,9 @@ class SubmissionView extends Component {
         
 
         return(
-            <div>
+            <div class="container"><br/>
                
-               <h3>{this.state.course}: Submitted Quiz of {this.state.user}</h3>
+               <h5>{localStorage.course}: Submitted Quiz of {localStorage.name}</h5>
                 <h2><Link to="/studentdashboard"><button class="btn btn-primary"> Dashboard </button></Link></h2>
                
             
@@ -92,7 +92,7 @@ class SubmissionView extends Component {
                     {
                         this.state.quiz.map(qui => {
                             return(
-                            <button class="tablinks"   onClick={(event)=>this.openAssignment(event,qui.quiz_id)} >[{qui.status}] Quiz ID#{qui.quiz_id}</button>
+                            <button class="tablinks"   onClick={(event)=>this.openAssignment(event,qui._id)} >[{qui.status}] Quiz</button>
   
                             )
                         })
@@ -105,8 +105,9 @@ class SubmissionView extends Component {
                        this.state.quiz.map(qui => {
                             
                             return(
-                            <div id={qui.quiz_id} class="tabcontent">
-                            <h3>{qui.course_id}Quiz Id:{qui.quiz_id}</h3>
+                            <div id={qui._id} class="tabcontent">
+                            <p>{qui.course_id}</p>
+                            <p>Refn ID: {qui._id}</p>
                             <p>Status of your Quiz: {qui.status} || ({qui.grade} out of {qui.marks})</p>
                             <p>Answer<br /> {qui.answer} </p>
                             

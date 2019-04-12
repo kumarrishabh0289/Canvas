@@ -39,24 +39,23 @@ class QuizGrade extends Component {
 
     //get the books data from backend  
     componentWillMount(){
-        axios.get('http://localhost:3001/session')
-                .then((response) => {
-                //update the state with the response data
-                this.setState({
-                    user : response.data.user,
-                    email: response.data.email,
-                    role: response.data.role,
-                    student:response.data.student,
-                    course:response.data.course,
-                });
-                console.log(this.state.user)
-                console.log(this.state.email)
-                console.log(this.state.role)
-            });
+       
     }
 
     componentDidMount(){
-        axios.get('http://localhost:3001/teacherquizgrade')
+        const params = {
+
+            student: localStorage.student,
+
+        };
+        const options = {
+            params,
+            headers: {
+                'Authorization': localStorage.jwt,
+
+            },
+        };
+        axios.get('http://localhost:3001/submission/quiz', options)
                 .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -75,15 +74,17 @@ class QuizGrade extends Component {
         
         const data = {
             
-            grade:this.state.grade,
+            grade: this.state.grade,
             quiz_id: quiz.quiz_id,
+            student: localStorage.student
            
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.put('http://localhost:3001/quizgradeupdate',data)
+        axios.patch('http://localhost:3001/submission/quizgrade', data)
             .then(response => {
+                alert("successfully graded");
                 console.log("Status Code : ",response.status);
                 if(response.status === 200){
                     this.setState({
@@ -131,9 +132,10 @@ class QuizGrade extends Component {
         
 
         return(
-            <div>
-               <h2>{this.state.course}: Quizzes</h2>
-                <h3>Viewing Quizzes of: {this.state.student}</h3><br />
+            <div class="container">
+            <br/>
+               <h4>{localStorage.course}: Quiz Check </h4>
+                <p>Viewing Assignment of student: {localStorage.student} </p><br />
                 <h2><Link to="/teacherdashboard"><button class="btn btn-primary"> Dashboard </button></Link></h2>
                
                 
@@ -143,7 +145,7 @@ class QuizGrade extends Component {
                     {
                         this.state.student_quiz.map(quiz => {
                             return(
-                            <button class="tablinks"   onClick={(event)=>this.openAssignment(event,quiz.quiz_id)} ><font color='green'>[{quiz.status}] Quiz ID#{quiz.quiz_id}</font></button>
+                            <button class="tablinks"   onClick={(event)=>this.openAssignment(event,quiz._id)} ><font color='green'>[{quiz.status}] Quiz </font></button>
   
                             )
                         })
@@ -156,8 +158,9 @@ class QuizGrade extends Component {
                        this.state.student_quiz.map(quiz => {
                             
                             return(
-                            <div id={quiz.quiz_id} class="tabcontent">
-                            <h3>{quiz.course_id}Quiz Id:{quiz.quiz_id}</h3>
+                            <div id={quiz._id} class="tabcontent">
+                            <p>{quiz.course_id}</p>
+                            <p>reference Id:{quiz.quiz_id}</p>
                             <p>{quiz.answer}</p>
                             <p>Submission Status: {quiz.status}</p>
                             <p>Total Marks: {quiz.marks}</p>

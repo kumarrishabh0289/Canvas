@@ -56,8 +56,9 @@ class Courses extends Component {
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.post('http://localhost:3001/enroll', data)
+        if(this.state.permission){
+            console.log("with Permission",this.state.permission);
+            axios.post('http://localhost:3001/enroll/permission', data)
             .then(response => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 201) {
@@ -74,6 +75,28 @@ class Courses extends Component {
 
 
             });
+        }
+        else{
+            axios.post('http://localhost:3001/enroll', data)
+            .then(response => {
+                console.log("Status Code : ", response.status);
+                if (response.status === 201) {
+                    this.setState({
+                        authFlag: true,
+                        status: response.data.message,
+                    })
+                }
+                else {
+                    console.log("Status Code : ", response.status);
+
+                }
+
+
+
+            });
+        }
+        //make a post request with the user data
+     
     }
 
     idSearch(e) {

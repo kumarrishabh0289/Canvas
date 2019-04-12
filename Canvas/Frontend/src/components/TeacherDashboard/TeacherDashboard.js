@@ -89,7 +89,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/numberview')
+        axios.get('http://localhost:3001/permission/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -144,16 +144,17 @@ class TeacherDashboard extends Component {
         //prevent page from refresh
 
         const data = {
-            number: this.state.number
+            number: this.state.number,
+            course_id: localStorage.course,
 
 
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/createnumber', data)
+        axios.post('http://localhost:3001/permission', data)
             .then(response => {
-                console.log("Status Code : ", response.status);
+                alert("Codes are Generated successfully");
 
 
 
@@ -163,64 +164,30 @@ class TeacherDashboard extends Component {
 
 
     ProgressButton = (course) => {
-        var headers = new Headers();
-        //prevent page from refresh
 
-        const data = {
-            student: course.student,
-        }
+        localStorage.setItem('student', course.student);
+
         //set the with credentials to true
-        axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.post('http://localhost:3001/setstudent', data)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                if (response.status === 200) {
-                    this.setState({
-                        authFlag: true,
-                        status: response.data,
-                        url: 1,
-                    })
-                }
-                else {
-                    console.log("Status Code : ", response.status);
 
-                }
-
-
-
-            });
+        this.setState({
+            authFlag: true,
+            
+            url: 1,
+        })
 
     }
 
     ProgressButtonQuiz = (course) => {
-        var headers = new Headers();
-        //prevent page from refresh
+        localStorage.setItem('student', course.student);
 
-        const data = {
-            student: course.student,
-        }
         //set the with credentials to true
-        axios.defaults.withCredentials = true;
-        //make a post request with the user data
-        axios.post('http://localhost:3001/setstudent', data)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                if (response.status === 200) {
-                    this.setState({
-                        authFlag: true,
-                        status: response.data,
-                        url: 2,
-                    })
-                }
-                else {
-                    console.log("Status Code : ", response.status);
 
-                }
+        this.setState({
+            authFlag: true,
+            
+            url: 2,
+        })
 
-
-
-            });
 
     }
 
@@ -237,7 +204,7 @@ class TeacherDashboard extends Component {
         axios.post("http://localhost:3001/assignment/upload", formData, config)
             .then((response) => {
                 alert("The file is successfully uploaded");
-                this.setState({ file_status: response.data.message});
+                this.setState({ file_status: response.data.message });
             }).catch((error) => {
             });
     }
@@ -255,7 +222,7 @@ class TeacherDashboard extends Component {
         axios.post("http://localhost:3001/lecture/upload", formData, config)
             .then((response) => {
                 alert("The file is successfully uploaded");
-                this.setState({ file_status: response.data.message});
+                this.setState({ file_status: response.data.message });
             }).catch((error) => {
             });
     }
@@ -316,7 +283,7 @@ class TeacherDashboard extends Component {
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        
+
                                         <th>Content</th>
                                         <th>URL</th>
                                         <th>Uploaded Docs</th>
@@ -326,7 +293,7 @@ class TeacherDashboard extends Component {
                                     </tr>
                                 </thead>
                                 {
-                                     this.state.lecture.map(lect => {
+                                    this.state.lecture.map(lect => {
                                         var ref = "#";
                                         ref = ref + lect._id;
                                         var path = "http://localhost:3000/uploads/";
@@ -335,8 +302,8 @@ class TeacherDashboard extends Component {
                                         return (
                                             <tbody>
                                                 <tr>
-                                                   
-                                                    
+
+
                                                     <td>{lect.content}</td>
                                                     <td>
                                                         <div id={lect._id} class="modalDialog">
@@ -359,7 +326,7 @@ class TeacherDashboard extends Component {
                                                             <button type="submit" class="btn btn-primary">Upload</button>
 
                                                         </form>
-                                                        
+
                                                     </td>
 
 
@@ -468,7 +435,7 @@ class TeacherDashboard extends Component {
                             </table>
                         </div>
                         <div id="menu3" class="tab-pane fade">
-                        <br/>
+                            <br />
                             <h4>Quiz List</h4>
                             <h2><Link to="/quiz"><button class="btn btn-primary">+ Create Quiz</button></Link></h2>
                             <table class="table">
