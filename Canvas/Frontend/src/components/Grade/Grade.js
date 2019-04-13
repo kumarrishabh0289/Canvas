@@ -46,6 +46,7 @@ class Grade extends Component {
         const params = {
 
             student: localStorage.student,
+            course_id: localStorage.course
 
         };
         const options = {

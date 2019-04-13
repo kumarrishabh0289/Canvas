@@ -33,6 +33,7 @@ class SubmissionView extends Component {
     const params = {
 
       student: localStorage.email,
+      course_id: localStorage.course
 
     };
     const options = {

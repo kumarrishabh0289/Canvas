@@ -24,7 +24,8 @@ router.get('/', (req, res, next) => {
 
 router.get('/assignment', (req, res, next) => {
     const student = req.query.student;
-    Submission.find({ student: student, assignment_id: { $gt: [] } })
+    const course_id = req.query.course_id;
+    Submission.find({ student: student, assignment_id: { $gt: [] }, course_id: course_id })
         .exec()
         .then(doc => {
             console.log("From database", doc);
@@ -45,7 +46,8 @@ router.get('/assignment', (req, res, next) => {
 
 router.get('/quiz', (req, res, next) => {
     const student = req.query.student;
-    Submission.find({ student: student, quiz_id: { $gt: [] } })
+    const course_id = req.query.course_id;
+    Submission.find({ student: student, quiz_id: { $gt: [] }, course_id: course_id })
         .exec()
         .then(doc => {
             console.log("From database", doc);

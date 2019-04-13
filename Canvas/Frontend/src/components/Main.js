@@ -24,6 +24,7 @@ import StudentQuiz from './StudentQuiz/StudentQuiz';
 import StudentQuizView from './StudentQuizView/StudentQuizView';
 import QuizGrade from './QuizGrade/QuizGrade';
 import CreateLecture from './CreateLecture/CreateLecture';
+import Mail from './Mail/Mail';
 
 
 
@@ -60,6 +61,7 @@ class Main extends Component {
                 <Route path="/studentquizView" component={StudentQuizView}/>
                 <Route path="/quizgrade" component={QuizGrade}/>
                 <Route path="/createlecture" component={CreateLecture}/>
+                <Route path="/mail" component={Mail}/>
             </div>
          
         )

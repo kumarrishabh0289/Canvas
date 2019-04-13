@@ -83,7 +83,8 @@ class Navbar extends Component {
                             
                             <Link to="/home" class="nav-link" ><i class='fas fa-home'></i> Home</Link><br/>
                            <Link to="/create" class="nav-link"><i class='far fa-edit'></i> Sign Up </Link><br/>
-                          <Link to="/profile" class="nav-link"><i class='fas fa-user'></i> Profile</Link>
+                          <Link to="/profile" class="nav-link"><i class='fas fa-user'></i> Profile</Link><br/>
+                          <Link to="/mail" class="nav-link"><i class='fas fa-envelope'></i> Messages</Link>
                                
                            
                         </nav>

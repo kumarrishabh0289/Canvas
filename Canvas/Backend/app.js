@@ -15,6 +15,7 @@ const announcementRoutes = require('./api/routes/announcement');
 const lectureRoutes = require('./api/routes/lecture');
 const submissionRoutes = require('./api/routes/submission');
 const permissionRoutes = require('./api/routes/permission');
+const mailRoutes = require('./api/routes/mail');
 
 const SecretprofileRoutes = require('./api/routes/secretprofile');
 var passport = require("passport");
@@ -66,6 +67,7 @@ app.use('/announcement',  announcementRoutes);
 app.use('/lecture',  lectureRoutes);
 app.use('/submission',  submissionRoutes);
 app.use('/permission',  permissionRoutes);
+app.use('/mail',  mailRoutes);
 
 
 app.use((req, res, next) => {

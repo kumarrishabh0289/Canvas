@@ -19,14 +19,24 @@ class StudentDashboard extends Component {
             lecture: [],
             quiz: [],
             student_assign: [],
+            currentPage: 1,
+            todosPerPage: 3
 
 
         }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(event) {
+        this.setState({
+            currentPage: Number(event.target.id)
+        });
     }
     componentWillMount() {
         const params = {
 
             student: localStorage.email,
+            course_id: localStorage.course
 
         };
         const options = {
@@ -104,6 +114,31 @@ class StudentDashboard extends Component {
     }
 
     render() {
+
+        const { student_course, currentPage, todosPerPage } = this.state;
+
+        // Logic for displaying current todos
+        const indexOfLastTodo = currentPage * todosPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+        const currentTodos = student_course.slice(indexOfFirstTodo, indexOfLastTodo);
+
+        // Logic for displaying page numbers
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(student_course.length / todosPerPage); i++) {
+            pageNumbers.push(i);
+        }
+
+        const renderPageNumbers = pageNumbers.map(number => {
+            return (
+                <button class="button_g button2"
+                    key={number}
+                    id={number}
+                    onClick={this.handleClick}
+                >
+                   {number}
+                </button>
+            );
+        });
 
         return (
             <div class="container">
@@ -227,7 +262,7 @@ class StudentDashboard extends Component {
                             <tbody>
 
                                 {
-                                    this.state.student_course.map(course => {
+                                   currentTodos.map(course => {
 
 
                                         return (
@@ -245,6 +280,9 @@ class StudentDashboard extends Component {
                                 }
                             </tbody>
                         </table>
+                        <ul id="page-numbers">
+                            {renderPageNumbers}
+                        </ul>
                     </div>
                     <div id="menu3" class="tab-pane fade">
                         <br />

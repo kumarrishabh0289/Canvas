@@ -18,12 +18,20 @@ class Courses extends Component {
             authFlag: false,
             status: "",
             permission: "",
+            todos: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+            currentPage: 1,
+            todosPerPage: 3
 
 
         }
         this.permissionChangeHandler = this.permissionChangeHandler.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
-
+    handleClick(event) {
+        this.setState({
+            currentPage: Number(event.target.id)
+        });
+    }
     permissionChangeHandler = (e) => {
         this.setState({
             permission: e.target.value
@@ -31,7 +39,7 @@ class Courses extends Component {
     }
     //get the books data from backend  
     componentWillMount() {
- 
+
 
     }
 
@@ -56,47 +64,47 @@ class Courses extends Component {
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
-        if(this.state.permission){
-            console.log("with Permission",this.state.permission);
+        if (this.state.permission) {
+            console.log("with Permission", this.state.permission);
             axios.post('http://localhost:3001/enroll/permission', data)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                if (response.status === 201) {
-                    this.setState({
-                        authFlag: true,
-                        status: response.data.message,
-                    })
-                }
-                else {
+                .then(response => {
                     console.log("Status Code : ", response.status);
+                    if (response.status === 201) {
+                        this.setState({
+                            authFlag: true,
+                            status: response.data.message,
+                        })
+                    }
+                    else {
+                        console.log("Status Code : ", response.status);
 
-                }
+                    }
 
 
 
-            });
+                });
         }
-        else{
+        else {
             axios.post('http://localhost:3001/enroll', data)
-            .then(response => {
-                console.log("Status Code : ", response.status);
-                if (response.status === 201) {
-                    this.setState({
-                        authFlag: true,
-                        status: response.data.message,
-                    })
-                }
-                else {
+                .then(response => {
                     console.log("Status Code : ", response.status);
+                    if (response.status === 201) {
+                        this.setState({
+                            authFlag: true,
+                            status: response.data.message,
+                        })
+                    }
+                    else {
+                        console.log("Status Code : ", response.status);
 
-                }
+                    }
 
 
 
-            });
+                });
         }
         //make a post request with the user data
-     
+
     }
 
     idSearch(e) {
@@ -158,8 +166,14 @@ class Courses extends Component {
     }
 
     render() {
+        const { courses, currentPage, todosPerPage } = this.state;
 
-        let details = this.state.courses.map(course => {
+        // Logic for displaying current todos
+        const indexOfLastTodo = currentPage * todosPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
+        const currentTodos = courses.slice(indexOfFirstTodo, indexOfLastTodo);
+
+        let details = currentTodos.map(course => {
             return (
 
                 <tr>
@@ -180,7 +194,26 @@ class Courses extends Component {
                     </td>
                 </tr>
             )
+
         })
+
+        // Logic for displaying page numbers
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(courses.length / todosPerPage); i++) {
+            pageNumbers.push(i);
+        }
+
+        const renderPageNumbers = pageNumbers.map(number => {
+            return (
+                <button class="button_g button2"
+                    key={number}
+                    id={number}
+                    onClick={this.handleClick}
+                >
+                   {number}
+                </button>
+            );
+        });
         //if not logged in go to login page
         let redirectVar = null;
 
@@ -191,7 +224,7 @@ class Courses extends Component {
 
             return (
                 <div>
-                    <br/>
+                    <br />
                     {redirectVar}
                     <div class="container">
                         <h2>List of All Available Courses To Enroll</h2>
@@ -234,6 +267,9 @@ class Courses extends Component {
                                 {details}
                             </tbody>
                         </table>
+                        <ul id="page-numbers">
+                            {renderPageNumbers}
+                        </ul>
                         <p>{this.state.status}</p>
                     </div>
 
