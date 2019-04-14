@@ -3,6 +3,7 @@ import '../../App.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
+import url from '../Url/Url';
 
 class Delete extends Component{
 
@@ -49,7 +50,7 @@ class Delete extends Component{
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.delete('http://localhost:3001/delete',{data})
+        axios.delete(url.url+'delete',{data})
             .then(response => {
                 console.log("Status Code : ",response.status);
                 if(response.status === 200){

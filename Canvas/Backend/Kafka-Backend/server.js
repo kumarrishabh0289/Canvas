@@ -1,5 +1,8 @@
 var connection = require('./kafka/Connection');
-var product = require('./services/products');
+var login = require('./services/login');
+var profile = require('./services/profile');
+var profile = require('./services/profile');
+var signup = require('./services/signup');
 
 
 function handleTopicRequest(topic_name, function_name){
@@ -33,4 +36,7 @@ function handleTopicRequest(topic_name, function_name){
     });
 }
 
-handleTopicRequest("product", product);
+
+handleTopicRequest("login", login);
+handleTopicRequest("profile", profile);
+handleTopicRequest("signup", signup);

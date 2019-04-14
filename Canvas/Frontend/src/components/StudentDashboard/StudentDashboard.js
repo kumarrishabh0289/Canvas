@@ -4,6 +4,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import url from '../Url/Url';
 
 class StudentDashboard extends Component {
     constructor() {
@@ -46,7 +47,7 @@ class StudentDashboard extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/submission/assignment', options)
+        axios.get(url.url+'submission/assignment', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -57,7 +58,7 @@ class StudentDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/submission/quiz', options)
+        axios.get(url.url+'submission/quiz', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -84,7 +85,7 @@ class StudentDashboard extends Component {
             },
         };
 
-        axios.get('http://localhost:3001/enroll/status', options)
+        axios.get(url.url+'enroll/status', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -93,7 +94,7 @@ class StudentDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/announcement/course', options)
+        axios.get(url.url+'announcement/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -102,7 +103,7 @@ class StudentDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/lecture/course', options)
+        axios.get(url.url+'lecture/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -203,7 +204,7 @@ class StudentDashboard extends Component {
                                 this.state.lecture.map(lect => {
                                     var ref = "#";
                                     ref = ref + lect._id;
-                                    var path = "http://localhost:3000/uploads/";
+                                    var path = url.path+"uploads/";
                                     if (lect.url) {
                                         path = path + lect.url;
 

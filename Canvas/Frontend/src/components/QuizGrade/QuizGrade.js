@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import {Link} from 'react-router-dom';
 import { Document, Page } from "react-pdf";
+import url from '../Url/Url';
 
 class QuizGrade extends Component {
     constructor(){
@@ -56,7 +57,7 @@ class QuizGrade extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/submission/quiz', options)
+        axios.get(url.url+'submission/quiz', options)
                 .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -83,7 +84,7 @@ class QuizGrade extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.patch('http://localhost:3001/submission/quizgrade', data)
+        axios.patch(url.url+'submission/quizgrade', data)
             .then(response => {
                 alert("successfully graded");
                 console.log("Status Code : ",response.status);

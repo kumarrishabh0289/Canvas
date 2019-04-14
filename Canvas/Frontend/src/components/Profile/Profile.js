@@ -4,7 +4,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
-
+import url from '../Url/Url';
 
 
 class Profile extends Component {
@@ -61,7 +61,7 @@ class Profile extends Component {
               
             },
            };
-        axios.get('http://localhost:3001/secretprofile/email',options)
+        axios.get(url.url+'secretprofile/kafkaprofile',options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -162,7 +162,7 @@ class Profile extends Component {
                 'content-type': 'multipart/form-data'
             }
         };
-        axios.post("http://localhost:3001/profile/imgupload", formData, config)
+        axios.post(url.url+"profile/imgupload", formData, config)
             .then((response) => {
                 alert("The file is successfully uploaded");
                 this.setState({ 
@@ -213,7 +213,7 @@ class Profile extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.patch('http://localhost:3001/profile', data)
+        axios.patch(url.url+'profile', data)
             .then((response) => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 200) {

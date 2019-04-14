@@ -4,8 +4,9 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import url from '../Url/Url';
 
-var role;
+
 class Courses extends Component {
     constructor() {
         super();
@@ -18,7 +19,7 @@ class Courses extends Component {
             authFlag: false,
             status: "",
             permission: "",
-            todos: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+            
             currentPage: 1,
             todosPerPage: 3
 
@@ -44,7 +45,7 @@ class Courses extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/course')
+        axios.get(url.url+'course')
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -66,7 +67,7 @@ class Courses extends Component {
         axios.defaults.withCredentials = true;
         if (this.state.permission) {
             console.log("with Permission", this.state.permission);
-            axios.post('http://localhost:3001/enroll/permission', data)
+            axios.post(url.url+'permission', data)
                 .then(response => {
                     console.log("Status Code : ", response.status);
                     if (response.status === 201) {
@@ -85,7 +86,7 @@ class Courses extends Component {
                 });
         }
         else {
-            axios.post('http://localhost:3001/enroll', data)
+            axios.post(url.url+'enroll', data)
                 .then(response => {
                     console.log("Status Code : ", response.status);
                     if (response.status === 201) {

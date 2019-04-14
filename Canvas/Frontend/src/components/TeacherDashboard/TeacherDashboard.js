@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 
+import url from '../Url/Url';
 
 class TeacherDashboard extends Component {
     constructor() {
@@ -45,7 +46,7 @@ class TeacherDashboard extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/enroll/status', options)
+        axios.get(url.url+'enroll/status', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -53,7 +54,7 @@ class TeacherDashboard extends Component {
                 });
 
             });
-        axios.get('http://localhost:3001/assignment/course', options)
+        axios.get(url.url+'assignment/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -62,7 +63,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/announcement/course', options)
+        axios.get(url.url+'announcement/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -71,7 +72,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/quiz/course', options)
+        axios.get(url.url+'quiz/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -80,7 +81,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/lecture/course', options)
+        axios.get(url.url+'lecture/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -89,7 +90,7 @@ class TeacherDashboard extends Component {
 
             });
 
-        axios.get('http://localhost:3001/permission/course', options)
+        axios.get(url.url+'permission/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -115,7 +116,7 @@ class TeacherDashboard extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.put('http://localhost:3001/enroll', data)
+        axios.put(url.url+'enroll', data)
             .then(response => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 200) {
@@ -152,7 +153,7 @@ class TeacherDashboard extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/permission', data)
+        axios.post(url.url+'permission', data)
             .then(response => {
                 alert("Codes are Generated successfully");
 
@@ -201,7 +202,7 @@ class TeacherDashboard extends Component {
                 'content-type': 'multipart/form-data'
             }
         };
-        axios.post("http://localhost:3001/assignment/upload", formData, config)
+        axios.post(url.url+"assignment/upload", formData, config)
             .then((response) => {
                 alert("The file is successfully uploaded");
                 this.setState({ file_status: response.data.message });
@@ -219,7 +220,7 @@ class TeacherDashboard extends Component {
                 'content-type': 'multipart/form-data'
             }
         };
-        axios.post("http://localhost:3001/lecture/upload", formData, config)
+        axios.post(url.url+"lecture/upload", formData, config)
             .then((response) => {
                 alert("The file is successfully uploaded");
                 this.setState({ file_status: response.data.message });
@@ -296,7 +297,7 @@ class TeacherDashboard extends Component {
                                     this.state.lecture.map(lect => {
                                         var ref = "#";
                                         ref = ref + lect._id;
-                                        var path = "http://localhost:3000/uploads/";
+                                        var path = url.path+"uploads/";
 
                                         path = path + lect.url;
                                         return (
@@ -392,7 +393,7 @@ class TeacherDashboard extends Component {
                                     this.state.assign.map(assig => {
                                         var ref = "#";
                                         ref = ref + assig._id;
-                                        var path = "http://localhost:3000/uploads/";
+                                        var path = url.path+"uploads/";
 
                                         path = path + assig.url;
                                         return (

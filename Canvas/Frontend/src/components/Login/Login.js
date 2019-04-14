@@ -4,6 +4,8 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
+import url from '../Url/Url';
+
 axios.defaults.withCredentials = true;
 //Define a Login Component
 class Login extends Component {
@@ -60,7 +62,7 @@ class Login extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/user/login', data)
+        axios.post(url.url+'kafkalogin', data)
             .then((response) => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 200) {
@@ -99,7 +101,7 @@ checkLogin = (e) => {
       var data={data:"this is data"};
     //prevent page from refresh
     e.preventDefault();
-    axios.post('http://localhost:3001/secret',data,options).then((response) => {
+    axios.post(url.url+'secret',data,options).then((response) => {
         console.log(response.data)
       }).catch((error) => {
         console.log(error)

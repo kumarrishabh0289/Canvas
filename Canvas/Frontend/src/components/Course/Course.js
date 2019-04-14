@@ -6,6 +6,8 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import Draggable from 'react-draggable';
 
+import url from '../Url/Url';
+
 
 class Courses extends Component {
     constructor() {
@@ -43,7 +45,7 @@ class Courses extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/course/email', options)
+        axios.get(url.url+'course/email', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({

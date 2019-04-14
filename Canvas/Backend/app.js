@@ -21,6 +21,9 @@ const SecretprofileRoutes = require('./api/routes/secretprofile');
 var passport = require("passport");
 var passportJWT = require("passport-jwt");
 
+//Kafka Routes
+const kafkaloginRoutes = require('./api/routes/kafkalogin');
+
 require('./api/auth/auth');
 
 
@@ -45,6 +48,10 @@ app.use(passport.initialize());
 
 
 var passport = require("passport");
+
+
+//Kafka Routes
+app.use('/kafkalogin', kafkaloginRoutes);
 
 
 

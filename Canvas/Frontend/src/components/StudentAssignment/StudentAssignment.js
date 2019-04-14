@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Document, Page } from "react-pdf";
+import url from '../Url/Url';
 
 class StudentAssignment extends Component {
     constructor() {
@@ -43,7 +44,7 @@ class StudentAssignment extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/assignment/course', options)
+        axios.get(url.url+'assignment/course', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -94,7 +95,7 @@ class StudentAssignment extends Component {
                 'content-type': 'multipart/form-data'
             }
         };
-        axios.post("http://localhost:3001/submission/upload", formData, config)
+        axios.post(url.url+"submission/upload", formData, config)
             .then((response) => {
                 alert("The file is successfully uploaded");
                 this.setState({ file_status: response.data.message });

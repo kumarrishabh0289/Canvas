@@ -3,6 +3,7 @@ import '../../App.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
+import url from '../Url/Url';
 
 //Define a Login Component
 class CreateCourse extends Component {
@@ -102,7 +103,7 @@ class CreateCourse extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/course', data)
+        axios.post(url.url+'course', data)
             .then(response => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 201) {

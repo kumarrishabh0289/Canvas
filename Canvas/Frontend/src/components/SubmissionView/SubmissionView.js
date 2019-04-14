@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Document, Page } from "react-pdf";
+import url from '../Url/Url';
 
 class SubmissionView extends Component {
   constructor() {
@@ -43,7 +44,7 @@ class SubmissionView extends Component {
 
       },
     };
-    axios.get('http://localhost:3001/submission/assignment', options)
+    axios.get(url.url+'submission/assignment', options)
       .then((response) => {
         //update the state with the response data
         this.setState({

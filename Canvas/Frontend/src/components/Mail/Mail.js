@@ -4,6 +4,7 @@ import axios from 'axios';
 import cookie from 'react-cookies';
 import { Redirect } from 'react-router';
 import { connect } from "react-redux";
+import url from '../Url/Url';
 
 class Mail extends Component {
     constructor() {
@@ -42,7 +43,7 @@ class Mail extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/mail', options)
+        axios.get(url.url+'mail', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -51,7 +52,7 @@ class Mail extends Component {
                 });
 
             });
-        axios.get('http://localhost:3001/user')
+        axios.get(url.url+'user')
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -60,7 +61,7 @@ class Mail extends Component {
                 });
 
             });
-            axios.get('http://localhost:3001/mail/from', options)
+            axios.get(url.url+'mail/from', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -98,7 +99,7 @@ class Mail extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/mail', data)
+        axios.post(url.url+'mail', data)
             .then((response) => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 201) {

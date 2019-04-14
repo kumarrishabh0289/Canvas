@@ -6,6 +6,8 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import Draggable from 'react-draggable';
 
+import url from '../Url/Url';
+
 class Student extends Component {
     constructor() {
         super();
@@ -33,7 +35,7 @@ class Student extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/enroll/email', options)
+        axios.get(url.url+'enroll/email', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -65,7 +67,7 @@ class Student extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.put('http://localhost:3001/enroll', data)
+        axios.put(url.url+'enroll', data)
             .then(response => {
                 console.log("Status Code : ", response.status);
                 if (response.status === 200) {

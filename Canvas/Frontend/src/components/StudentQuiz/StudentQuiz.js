@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
 import {Link} from 'react-router-dom';
 import { Document, Page } from "react-pdf";
+import url from '../Url/Url';
 
 class StudentQuiz extends Component {
     constructor(){
@@ -41,7 +42,7 @@ class StudentQuiz extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/quiz/course', options)
+        axios.get(url.url+'quiz/course', options)
         .then((response) => {
         //update the state with the response data
         this.setState({
@@ -90,7 +91,7 @@ class StudentQuiz extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/submission',data)
+        axios.post(url.url+'submission',data)
             .then(response => {
                 console.log("Status Code : ",response.status);
                 if(response.status === 201){

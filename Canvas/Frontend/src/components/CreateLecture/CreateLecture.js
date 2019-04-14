@@ -3,6 +3,7 @@ import '../../App.css';
 import axios from 'axios';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
+import url from '../Url/Url';
 
 
 class CreateLecture extends Component{
@@ -65,7 +66,7 @@ class CreateLecture extends Component{
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/lecture',data, options)
+        axios.post(url.url+'lecture',data, options)
             .then(response => {
                 console.log("Status Code : ",response.status); 
                 if(response.status === 201){

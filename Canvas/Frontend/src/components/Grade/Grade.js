@@ -6,6 +6,8 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Document, Page } from "react-pdf";
 
+import url from '../Url/Url';
+
 class Grade extends Component {
     constructor() {
         super();
@@ -56,7 +58,7 @@ class Grade extends Component {
 
             },
         };
-        axios.get('http://localhost:3001/submission/assignment', options)
+        axios.get(url.url+'submission/assignment', options)
             .then((response) => {
                 //update the state with the response data
                 this.setState({
@@ -82,7 +84,7 @@ class Grade extends Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.patch('http://localhost:3001/submission', data)
+        axios.patch(url.url+'submission', data)
             .then(response => {
                 alert("successfully graded");
                 console.log("Status Code : ", response.status);
